@@ -1,0 +1,1 @@
+$('#volume').prop('disabled', true);
