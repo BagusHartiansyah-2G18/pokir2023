@@ -24,7 +24,7 @@ class Cadmin extends Controller{
             return view('Dashboard.index')->with([
                 'code'  =>'Dashboard',
                 'dt'    =>array_merge(
-                    [ 
+                    [
                         'listBelanja'=> Hdb::glistUangBelanja($user->kdUser)
                     ],
                         $this->getData($request->session()->get('duser'))
@@ -34,10 +34,10 @@ class Cadmin extends Controller{
         return redirect('setwan')->with('succsess','');
     }
     public function keuangan(Request $request){
-        if($request->session()->has('duser')){ 
+        if($request->session()->has('duser')){
             $user =$request->session()->get('duser');
             $dusers= Hdb::cbUsers($user);
-            $duang= Hdb::getKeuangan($user->kdUser); 
+            $duang= Hdb::getKeuangan($user->kdUser);
             return view('keuangan.index')->with([
                 'code'  =>'keuangan',
                 'dt'    =>array_merge(
@@ -74,7 +74,7 @@ class Cadmin extends Controller{
             return view('DataLingkungan.index')->with([
                 'code'  =>'DataLingkungan',
                 'dt'    =>array_merge(
-                    [ 
+                    [
                         'desa'=>Hdb::cbDesa(),
                         'kec'=>Hdb::cbKec(),
                         'lingkungan'=>Hdb::getLingkungan(),
@@ -85,48 +85,81 @@ class Cadmin extends Controller{
         }
         return redirect('setwan')->with('succsess','');
     }
-    public function daftarUsulan(Request $request,$kdUser){ 
+    public function daftarUsulan(Request $request,$kdUser){
         if($request->session()->has('duser')){
             $user =$request->session()->get('duser');
             $dusers=[];
             $name = '';
-            $kdJaba =$request->session()->get('duser')->kdJaba; 
+            $kdJaba =$user->kdJaba;
+            $tahun ="2025";
+
+            $kdUser = base64_decode($kdUser);
+            $act = $user->act;
+
+            $getdata = $this->getData([
+                "kdUser" => $kdUser,
+                "kdJaba" => 1,
+                "name"  => $name,
+            ]);
+
+
+            $tahapan = 0;
+            if($user->kdJaba==$getdata['xtimer']->keterangan){
+                $tahapan = 1;
+            }
+
+            if($user->kdJaba>5){
+                $tahapan=1;
+            }
+
+            // return print_r($user->kdJaba." | ".$getdata['timer']->keterangan);
             if($kdJaba>1){
                 $dusers= DB::table('users')
-                            ->selectRaw('kdUser as value, name as valueName ')
+                            ->selectRaw('kdUser as value, name as valueName, act ')
                             ->where('kdJaba',1)
                             ->get();
                 if($kdUser==0){
+                    $act = $dusers[0]->act;
                     $kdUser = $dusers[0]->value;
                     $name = $dusers[0]->valueName;
                 }else{
                     $getName= DB::table('users')
-                            ->selectRaw('kdUser as value, name as valueName ')
+                            ->selectRaw('kdUser as value, name as valueName, act ')
                             ->where('kdUser',$kdUser)
                             ->get();
-                    $name = $getName[0]->valueName;
+                    $name   = $getName[0]->valueName;
+                    $act    = $getName[0]->act;
+                    $kdUser = $getName[0]->value;
                 }
             } else{
                 $kdUser = $user->kdUser;
-                $dusers= DB::table('users')
-                            ->selectRaw('kdUser as value, name as valueName ')
-                            ->where('kdUser',$user->kdUser)
-                            ->get();
-                $name = $dusers[0]->valueName;
+                $dusers=[[
+                    "value"=> $user->kdUser,
+                    "valueName"=>$user->name
+                ]];
+                $name = $user->name;
             }
-           
+
+            if($getdata['xtimer']->keterangan>1){
+                $act = $user->act;
+            }
+
             return view('DaftarUsulan.index')->with([
                 'code'  =>'DaftarUsulan',
                 'dt'    =>array_merge(
-                    [
-                        'usulan'        =>Hdb::gdaftarUsulan($kdUser),
-                        'duser'         =>$dusers,
-                        'cbLingkungan'  => Hdb::cbLingkungan(),
-                        'kusulan'       => Hdb::getKamusUsulan()
-                    ],
+                        [
+                            'usulan'        =>Hdb::gdaftarUsulan($kdUser,$getdata['xtimer']->keterangan,$tahun),
+                            'duser'         =>$dusers,
+                            'cbLingkungan'  => Hdb::cbLingkungan(),
+                            'kusulan'       => Hdb::getKamusUsulan(),
+                            'tahapan'       => $getdata['xtimer']->keterangan,
+                            'xtahapan'       => $tahapan,
+                            'act'           => $act
+                        ],
                         $this->getData([
                             "kdUser" => $kdUser,
-                            "kdJaba" => 1,
+                            // "kdUser" => $user->kdUser,
+                            "kdJaba" => $kdJaba,
                             "name"  => $name,
                         ])
                     )
@@ -139,16 +172,16 @@ class Cadmin extends Controller{
             // return print_r(   $request->session()->token());
             $dusers=[];
             $kdJaba =$request->session()->get('duser')->kdJaba;
-            if($kdJaba>1){
+            if($kdJaba>5){
                 $dusers= DB::table('users')
                             ->selectRaw('kdUser,name,password,kdJaba')
                             ->where('kdJaba','<=',$kdJaba)
                             ->get();
-            } 
+            }
             return view('Akun.index')->with([
                 'code'  =>'Akun',
                 'dt'    =>array_merge(
-                    [ 
+                    [
                         "users" => $dusers,
                     ],
                         $this->getData($request->session()->get('duser'))
@@ -172,7 +205,7 @@ class Cadmin extends Controller{
         }
         return redirect('setwan/dashboard')->with('succsess','');
     }
-    function getData($v){ 
+    function getData($v){
         try {
             return [
                 "xuser"=>base64_encode($v->kdUser),
@@ -183,6 +216,7 @@ class Cadmin extends Controller{
                 "uangK"=>Hdb::guangKeluar($v->kdUser),
                 "uangS"=>Hdb::gsisaUang($v->kdUser),
                 "level"=>$v->kdJaba,
+                "kdUser"=>$v->kdUser
             ];
         } catch (\Throwable $th) {
             return [
@@ -194,15 +228,17 @@ class Cadmin extends Controller{
                 "uangK"=>Hdb::guangKeluar($v['kdUser']),
                 "uangS"=>Hdb::gsisaUang($v['kdUser']),
                 "level"=>$v['kdJaba'],
+                "kdUser"=>$v['kdUser']
             ];
         }
     }
     function portal($request){
         if($request->session()->has('duser')){
             $user= $request->session()->get('duser');
-            if($user->kdJaba>1){
+            if($user->kdJaba>5){
                 return [
                     "ex"=>true,
+                    "tahun"=>"2025",
                     "sess"=>$user
                 ];
             }

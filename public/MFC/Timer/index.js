@@ -6,20 +6,20 @@ function  _onload(){
 }
 function respon(v){
     if(v!=undefined){
-        _.timer=v; 
+        _.timer=v;
     }
     $('#viewData').html(setTabel());
     _btabelStart("dt");
 }
 function setTabel(){
     btnAction=[];
-    btnAction.push({ 
+    btnAction.push({
         clsBtn:`btn2 cwarning`
         ,func:"updData()"
         ,icon:`<span class="material-icons">edit</span>`
         ,title:"Perbarui"
     });
-    btnAction.push({ 
+    btnAction.push({
         clsBtn:`btn2 cdanger`
         ,func:"deled()"
         ,icon:`<span class="material-icons">delete</span>`
@@ -46,15 +46,15 @@ function _added(){
     const param ={
         xuser:_.xuser,
         judul:$("#judul").val(),
-        dateS:$("#dateS").val(), 
-        timeS:$("#timeS").val(), 
-        dateE:$("#dateE").val(), 
-        timeE:$("#timeE").val(), 
-        keterangan:($("#keterangan").val().length==0? '-':$("#keterangan").val()), 
+        dateS:$("#dateS").val(),
+        timeS:$("#timeS").val(),
+        dateE:$("#dateE").val(),
+        timeE:$("#timeE").val(),
+        keterangan:($("#keterangan").val().length==0? '-':$("#keterangan").val()),
     }
-    
+
     // return console.log(param);
-    _post('/setwan/timer/added',param).then(v=>{
+    _post('/pokir/timer/added',param).then(v=>{
         if(v.exc){
             _addForm();
             return respon(v.data);
@@ -63,9 +63,9 @@ function _added(){
             bg:'e',
             msg:v.msg
         })
-    }); 
+    });
 }
-function _htmlForm(v) { 
+function _htmlForm(v) {
     const kond=(v==undefined? true:false);
     return `
         <div class="form1 bwhite">
@@ -75,12 +75,12 @@ function _htmlForm(v) {
                     <span class="mdi mdi-close-circle fz25 cdanger"></span>
                 </button>
             </div>
-            <div class="body ">  
+            <div class="body ">
                 <div class="labelInput2 mtb10px Cblack">
                     <label class="">Judul</label>
                     <input type="text" id="judul" value="${(kond? '':v.judul )}"/>
                 </div>
-                <div class="doubleInput"> 
+                <div class="doubleInput">
                     <label class="">Tanggal Mulai</label>
                     <div class="double">
                         <div class="labelInput1">
@@ -118,7 +118,7 @@ function _htmlForm(v) {
                 </div>
             </div>
         </div>
-    `; 
+    `;
 }
 
 function updData(ind) {
@@ -144,15 +144,15 @@ function _upded(ind) {
         id:_.timer[ind].id,
         xuser:_.xuser,
         judul:$("#judul").val(),
-        dateS:$("#dateS").val(), 
-        timeS:$("#timeS").val(), 
-        dateE:$("#dateE").val(), 
-        timeE:$("#timeE").val(), 
-        keterangan:($("#keterangan").val().length==0? '-':$("#keterangan").val()), 
+        dateS:$("#dateS").val(),
+        timeS:$("#timeS").val(),
+        dateE:$("#dateE").val(),
+        timeE:$("#timeE").val(),
+        keterangan:($("#keterangan").val().length==0? '-':$("#keterangan").val()),
     }
-    
+
     // return console.log(param);
-    _post('/setwan/timer/upded',param).then(v=>{
+    _post('/pokir/timer/upded',param).then(v=>{
         if(v.exc){
             formActClose();
             return respon(v.data);
@@ -168,9 +168,9 @@ function deled(ind) {
         id:_.timer[ind].id,
         xuser:_.xuser,
     }
-    
+
     // return console.log(param);
-    _post('/setwan/timer/deled',param).then(v=>{
+    _post('/pokir/timer/deled',param).then(v=>{
         if(v.exc){
             return respon(v.data);
         }

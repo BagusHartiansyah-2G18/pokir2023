@@ -1,6 +1,6 @@
 let _vtabel={
     length:25,
-    title:'Laporan_'
+    title:'Daftar Usulan'
 };
 function btabel(v){
     // datax=[];
@@ -44,7 +44,7 @@ function btabel(v){
         </div>
     </div>
     `;
-} 
+}
 function _tabel(v){
     // _tabel(
     // {
@@ -60,7 +60,7 @@ function _tabel(v){
     var fdata=`
     <thead>
         <tr>`,fno=false,faction=false;
-    
+
     if(v.no>0){
         fdata+=`<th>no</th>`;
         fno=true;
@@ -74,7 +74,7 @@ function _tabel(v){
         fdata+=`<th>Action</th>`;
         faction=true;
         if(v.action.length==0){
-            v.action.push({ 
+            v.action.push({
                 clsBtn:`btn2 bdanger`
                 ,icon:`<i class="mdi mdi-lock fz25"></i>`
                 ,title:"TERKUNCI"
@@ -118,7 +118,7 @@ function _tabel(v){
                     kond=false;
                     fdata+=`<td>`+_inp({type:"checkbox", attr:" onchange='"+v.func.substring(0,v.func.length-1)+i1+",this)'",checked:_trueChecked(1,Number(v1['checked']))  })+`</td>`;
                 }else{
-                    
+
                     kond=false;
                     fdata+=`<td>`+_inp({type:"checkbox" ,attr:"", checked:_trueChecked(1,Number(v1['checked']))})+`</td>`;
                 }
@@ -178,7 +178,7 @@ function _tabel(v){
             }
             fdata+=`</tr>`;
         }
-        
+
     });
 
    return fdata+=`</tbody>`;
@@ -187,7 +187,7 @@ function btabelForExcel(v){
     var fdata=`
     <thead>
         <tr>`,fno=false,faction=false;
-    
+
     if(v.no>0){
         fdata+=`<th>no</th>`;
         fno=true;
@@ -199,7 +199,7 @@ function btabelForExcel(v){
         fdata+=`<th>Action</th>`;
         faction=true;
         if(v.action.length==0){
-            v.action.push({ 
+            v.action.push({
                 clsBtn:`btn-outline-danger`
                 ,icon:`<i class="mdi mdi-lock"></i>`
                 ,title:"TERKUNCI"
@@ -271,7 +271,7 @@ function _btabelStart(id,all){
         if(all==undefined){
             return $('#'+id).DataTable({
                 "pageLength": _vtabel.length
-            }); 
+            });
         }else if(all){
             return $('#'+id).DataTable({
                 // buttons: true
@@ -280,8 +280,8 @@ function _btabelStart(id,all){
                 dom: 'Blfrtip',
                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [
-                    { extend: 'pdf', className: 'btn btn-success buttons-copy buttons-html5',title:_vtabel.title},
-                    { extend: 'excel', className: 'btn btn-primary buttons-copy buttons-html5 mr-3',title:_vtabel.title}
+                    { extend: 'pdf', className: 'btn btn-secondary buttons-copy buttons-html5',title:_vtabel.title},
+                    { extend: 'excel', className: 'btn btn-secondary buttons-copy buttons-html5',title:_vtabel.title}
                     // 'copy', 'csv', 'excel', 'pdf', 'print'
                 ],
             });
@@ -293,11 +293,11 @@ function _btabelStart(id,all){
                 dom: 'Blfrtip',
                 lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"]],
                 buttons: [
-                    { extend: 'copy', className: 'btn btn-secondary buttons-copy buttons-html5' ,title:_vtabel.title},
-                    { extend: 'csv', className: 'btn btn-warning buttons-copy buttons-html5' ,title:_vtabel.title},
-                    { extend: 'excel', className: 'btn btn-outline-primary bg-primary text-dark buttons-copy buttons-html5' ,title:_vtabel.title},
-                    { extend: 'pdf', className: 'btn btn-success buttons-copy buttons-html5' ,title:_vtabel.title},
-                    { extend: 'print', className: 'btn btn-info buttons-copy buttons-html5 mr-3',title:_vtabel.title }
+                    { extend: 'copy', className: 'btn1 bsecondary' ,title:_vtabel.title},
+                    { extend: 'csv', className: 'btn1 bwarning' ,title:_vtabel.title},
+                    { extend: 'excel', className: 'btn1 bprimary' ,title:_vtabel.title},
+                    { extend: 'pdf', className: 'btn1 bsuccess' ,title:_vtabel.title},
+                    { extend: 'print', className: 'btn1 binfo',title:_vtabel.title }
                     // 'copy', 'csv', 'excel', 'pdf', 'print'
                 ],
             });
@@ -307,7 +307,7 @@ function _btabelStart(id,all){
 
     // $(document).ready(function() {
     //     // $('#'+id).DataTable();
-        
+
         // $('#'+id).DataTable({
         //     // buttons: true
         //     // dom: 'Bfrtip',
@@ -318,14 +318,14 @@ function _btabelStart(id,all){
         //         { extend: 'excel', className: 'btn btn-primary buttons-copy buttons-html5 mr-3' }
         //         // 'copy', 'csv', 'excel', 'pdf', 'print'
         //     ],
-            
+
         // });
     // });
 }
 
 function _btnTabel(v,id){
     // infoSupport=[];
-    // infoSupport.push({ 
+    // infoSupport.push({
     //     clsBtn:`btn-secondary shadow btn-block fzMfc`
     //     ,func:"onOffForm(this)"
     //     ,icon:`<i class="mdi mdi-file-lock  "></i>Form Pekerjaan`

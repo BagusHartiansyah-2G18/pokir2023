@@ -1,23 +1,23 @@
 function  _onload(){
-    respon();  
+    respon();
 }
 function respon(v){
     if(v!=undefined){
-        _.lingkungan=v; 
+        _.lingkungan=v;
     }
     $('#viewData').html(setTabel());
     _btabelStart("dt");
 }
 function setTabel(){
     btnAction=[];
-    if(_.level>1){
-        btnAction.push({ 
+    if(_.level>5){
+        btnAction.push({
             clsBtn:`btn2 cwarning`
             ,func:"updData()"
             ,icon:`<span class="material-icons">edit</span>`
             ,title:"Perbarui"
         });
-        btnAction.push({ 
+        btnAction.push({
             clsBtn:`btn2 cdanger`
             ,func:"del()"
             ,icon:`<span class="material-icons">delete</span>`
@@ -45,12 +45,12 @@ function _added(){
     const param ={
         xuser:_.xuser,
         nmLing    :$("#nmLing").val(),
-        kdKec   :$("#kdKec").val(), 
+        kdKec   :$("#kdKec").val(),
         kdDesa  :$("#kdDesa").val()
     }
-    
+
     // return console.log(param);
-    _post('/setwan/lingkungan/added',param).then(v=>{
+    _post('/pokir/lingkungan/added',param).then(v=>{
         if(v.exc){
             _addForm();
             return respon(v.data);
@@ -59,9 +59,9 @@ function _added(){
             bg:'e',
             msg:v.msg
         })
-    }); 
+    });
 }
-function _htmlForm(v) { 
+function _htmlForm(v) {
     const kond=(v==undefined? true:false);
     return `
         <div class="form1 bwhite">
@@ -71,7 +71,7 @@ function _htmlForm(v) {
                     <span class="mdi mdi-close-circle fz25 cdanger"></span>
                 </button>
             </div>
-            <div class="body ">  
+            <div class="body ">
                 <div class="labelInput2 mtb10px Cblack">
                     <label class="mw75px">Dusun</label>
                     <input type="text" id="nmLing" value="${(kond? '':v.nmLing )}"/>
@@ -93,7 +93,7 @@ function _htmlForm(v) {
                         dt  :getDesaSesuaiKec(_.kec[0].value)
                     })
                 }
-                 
+
             </div>
             <div class="footer posEnd">
                 <div class="btnGroup">
@@ -102,7 +102,7 @@ function _htmlForm(v) {
                 </div>
             </div>
         </div>
-    `; 
+    `;
 }
 function changeKec(v){
     $('#kdDesa').html(_selectOption(getDesaSesuaiKec(v.value)));
@@ -116,7 +116,7 @@ function updData(ind) {
         ind,
         nmLing  :_.lingkungan[ind].nmLing,
         kdKec   :_.lingkungan[ind].kdDinas,
-        kdDesa  :_.lingkungan[ind].kdDesa, 
+        kdDesa  :_.lingkungan[ind].kdDesa,
     }));
     $('#kdKec').val(_.lingkungan[ind].kdKec);
     $('#kdDesa').html(_selectOption(getDesaSesuaiKec(_.lingkungan[ind].kdKec)));
@@ -129,12 +129,12 @@ function _upded(ind) {
         kdDesax:_.lingkungan[ind].kdDesa,
         xuser:_.xuser,
         nmLing   :$("#nmLing").val(),
-        kdKec   :$("#kdKec").val(), 
+        kdKec   :$("#kdKec").val(),
         kdDesa  :$("#kdDesa").val()
     }
-    
+
     // return console.log(param);
-    _post('/setwan/lingkungan/upded',param).then(v=>{
+    _post('/pokir/lingkungan/upded',param).then(v=>{
         if(v.exc){
             formActClose();
             return respon(v.data);
@@ -168,7 +168,7 @@ function del(ind) {
             `,
         })
     );
-    
+
 }
 function _deled(ind){
     const param ={
@@ -177,9 +177,9 @@ function _deled(ind){
         kdDesa:_.lingkungan[ind].kdDesa,
         xuser:_.xuser,
     }
-    
+
     // return console.log(param);
-    _post('/setwan/lingkungan/deled',param).then(v=>{
+    _post('/pokir/lingkungan/deled',param).then(v=>{
         if(v.exc){
             dialogClose()
             return respon(v.data);

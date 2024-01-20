@@ -201,7 +201,7 @@
 }
 
 .hheader, .wrapLogin2 .login .wrap .nmApp, header#mfcProfil {
-  height: 50px;
+  height: 150px;
 }
 
 .w400px {
@@ -335,7 +335,9 @@
 .corange {
   color: darkorange !important;
 }
-
+.dt-buttons{
+    grid-column-start: 2;
+}
 .bnone {
   background: none;
 }
@@ -1655,12 +1657,19 @@ header#mfc1 .right {
   display: flex;
   flex-direction: column;
   padding: 8% 10px;
-  margin-top: 20%;
+  margin-top: 10%;
   width: 100%;
 }
 .wrapLogin2 .login .wrap .nmApp p {
   font-size: 30px;
   text-shadow: #17a2b8 1px 0 10px;
+}
+.nmApp{
+    align-content: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 .wrapLogin2 .login .wrap .form {
   width: 80%;

@@ -3,16 +3,16 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" id="viewport" content="width = 639, height = device-height, maximum scale = 1.0, minimum-scale = 1.0">
-        <title>SETWAN</title>
+        <title>E - POKIR</title>
         <link rel="stylesheet" href="{{ url('/style/css/output.css')}}"/>
         <link rel="stylesheet" href="{{ url('MFC/library/MaterialDesignIcons6/css/materialdesignicons.min.css')}}";>
-        @extends('Dasar.head')        
+        @extends('Dasar.head')
     </head>
    <body>
-    
+
         <header id="mfc1">
             <div class="left">
-                <h2>SETWAN</h2> 
+                <h2 style="margin-left: 10%;">E - POKIR</h2>
                 <button class="btn1" id="menu"><span class="mdi mdi-menu clight"></span></button>
             </div>
             <div class="center posRelative" style="flex-direction: column;top: 25px;">
@@ -33,10 +33,10 @@
                     <label class="fz12"></label>
                     <span class="mdi mdi-lightbulb fz25"></span>
                 </div>
-                <a href="{{ url('setwan/logout')}}" class="btn2 cdanger "><span class="mdi mdi-logout fz20">Logout</span></a>
+                <a href="{{ url('pokir/logout')}}" class="btn2 cdanger "><span class="mdi mdi-logout fz20">Logout</span></a>
             </div>
         </header>
-        
+
         <div class="leftBar2 lbActive" id="liftBar2">
             <div class="icon">
                 <img src="{{url('/logo/boy.png')}}" />
@@ -45,44 +45,44 @@
             </div>
             <ul>
                 <li>
-                    <a href="{{url('setwan/dashboard')}}" class="fz25 cdark">
+                    <a href="{{url('pokir/dashboard')}}" class="fz25 cdark">
                         <label>Dashboard</label>
                         <span class="mdi mdi-apps"></span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{url('setwan/dashboard/keuangan')}}" class="fz25 cdark">
+                <li class="dnone">
+                    <a href="{{url('pokir/dashboard/keuangan')}}" class="fz25 cdark">
                         <label>Keuangan</label>
                         <span class="mdi mdi-currency-usd"></span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{url('setwan/dashboard/kamusUsulan')}}" class="fz25 cdark">
+                    <a href="{{url('pokir/dashboard/kamusUsulan')}}" class="fz25 cdark">
                         <label>Kamus Usulan</label>
                         <span class="mdi mdi-database-search"></span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{url('setwan/dashboard/dataLingkungan')}}" class="fz25 cdark">
+                    <a href="{{url('pokir/dashboard/dataLingkungan')}}" class="fz25 cdark">
                         <label>Data Lingkungan </label>
                         <span class="mdi mdi-map-marker-path"></span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{url('setwan/dashboard/daftarUsulan/0')}}" class="fz25 cdark">
+                    <a href="{{url('pokir/dashboard/daftarUsulan/0')}}" class="fz25 cdark">
                         <label>Daftar Usulan</label>
                         <span class="mdi mdi-clipboard-list"></span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{url('setwan/dashboard/akun')}}" class="fz25 cdark">
+                    <a href="{{url('pokir/dashboard/akun')}}" class="fz25 cdark">
                         <label>Akun</label>
                         <span class="mdi mdi-account"></span>
                     </a>
                 </li>
-                @if($dt['level']>1)
+                @if($dt['level']>5)
                 <li>
-                    <a href="{{url('setwan/dashboard/timer')}}" class="fz25 cdark">
+                    <a href="{{url('pokir/dashboard/timer')}}" class="fz25 cdark">
                         <label>Timer</label>
                         <span class="mdi mdi-clock-time-eight-outline"></span>
                     </a>
@@ -99,7 +99,7 @@
                         <span>@yield('pageDetail')</span>
                     </div>
                 </div>
-                <div class="flexR">
+                <div class="flexR dnone">
                     <button class="btn6 bmuted clight">
                         <span class="mdi mdi-currency-usd  bprimary fziconM"></span>
                         <label class="" style="padding: 0px 20px 0px 0px !important;">
@@ -121,16 +121,16 @@
                             <label id="uangS">Rp. 0</label>
                          </label>
                     </button>
-                </div> 
+                </div>
             </div>
-            @yield('form') 
+            @yield('form')
         </div>
-        
+
         <footer class="w100p">
             <div  id="copyRight">
                 <div class="judulProject">
                     <span class="mdi mdi-alpha-c-circle-outline bdanger cwhite "></span>
-                    <h2 class="bdanger clight">Setwan 2023</h2>
+                    <h2 class="bdanger clight">E-POKIR 2023</h2>
                 </div>
             </div>
             <div style="height: 50px; width: 100%;" class="bdark"></div>
@@ -138,7 +138,7 @@
         <dialog class="modal1 mw600px" id="dialog1">
         </dialog>
         <script src="/MFC/Dashboard/style.js"></script>
-        @extends('Dasar.footer') 
+        @extends('Dasar.footer')
         @section('folder', @url('/MFC/'.$code.'/index.js'))
    </body>
 </html>
