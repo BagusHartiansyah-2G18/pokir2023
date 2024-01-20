@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Cauth extends Controller
 {
-    public function index(){ 
+    public function index(){
         // if($user = Auth::user()){
         //     if ($user->kdJaba==2) {
         //         return redirect()->intended(2);
@@ -57,6 +57,6 @@ class Cauth extends Controller
     public function logout(Request $request){
         $request->session()->flush();
         Auth::logout();
-        return redirect('setwan');
+        return redirect('pokir');
     }
 }

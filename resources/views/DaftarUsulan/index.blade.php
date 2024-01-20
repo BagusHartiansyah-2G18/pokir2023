@@ -4,7 +4,13 @@
 @section('page', 'Daftar Usulan')
 @section('pageDetail', 'Daftar perencanaan usulan')
 @section('form')
-	<div class="flexC"> 
+	<div class="flexC">
+        <div class="flexR jcSB" style="justify-content: space-between;">
+            @if($dt['act'])
+                <button class="btn2 bsuccess cwhite" onclick="_export()">Ajukan Munuju Tahapan Selanjutnya</button>
+            @endif
+            <button class="btn2 bsuccess cwhite" onclick="_pdf()">Laporan PDF</button>
+        </div>
 		<div class="formActionLeft" id="formActionLeft">
 			<div class="form2 ">
 				<div class="header bdark csuccess">

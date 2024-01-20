@@ -1,41 +1,52 @@
 function  _onload(){
-    respon(); 
-    _.ind = 0; 
+    respon();
+    _.ind = 0;
+
+
+    tind = _.duser.findIndex( x => x.value === _.kdUser )
+    if(tind>=0){
+        _.ind = tind;
+    }
+
     viewInfo();
-    // console.log(_); 
+    // console.log(_);
 }
 function respon(v){
     if(v!=undefined){
-        _.usulan=v; 
+        _.usulan=v;
     }
     $('#viewData').html(setTabel());
     _btabelStart("dt");
 }
 function setTabel(){
-    btnAction=[]; 
-    if(_.timerAct){
-        btnAction.push({ 
-            clsBtn:`btn2 cwarning`
-            ,func:"updData()"
-            ,icon:`<span class="mdi mdi-lead-pencil fz25"></span>`
-            ,title:"Perbarui"
-        });
-        btnAction.push({ 
-            clsBtn:`btn2 cdanger`
-            ,func:"del()"
-            ,icon:`<span class="mdi mdi-archive-remove fz25"></span>`
-            ,title:"Delete"
-        });
+    btnAction=[];
+    if((_.timerAct && _.act)){
+        if(_.xtahapan){
+            btnAction.push({
+                clsBtn:`btn2 cwarning`
+                ,func:"updData()"
+                ,icon:`<span class="mdi mdi-lead-pencil fz25"></span>`
+                ,title:"Perbarui"
+            });
+            btnAction.push({
+                clsBtn:`btn2 cdanger`
+                ,func:"del()"
+                ,icon:`<span class="mdi mdi-archive-remove fz25"></span>`
+                ,title:"Delete"
+            });
+        }
     }
     return btabel({
             id:"dt",
             class:'',
-            isi:_tabel(
-                {
+            isi:_tabel({
                     data:_.usulan,
                     no:1,
-                    kolom:['nmDinas',"nmUsulan","volume",'satuan','harga$','volume*harga'],
-                    namaKolom:["Dinas","Usulan",'Volume','satuan','Harga','Total'],
+                    kolom:['nmDinas',"nmUsulan","volume",'satuan'],
+                    namaKolom:["Dinas","Usulan",'Volume','satuan'],
+
+                    // kolom:['nmDinas',"nmUsulan","volume",'satuan','volume*harga'],
+                    // namaKolom:["Dinas","Usulan",'Volume','satuan','Total'],
                     action:btnAction
                 })
         });
@@ -49,7 +60,7 @@ function _added(){
         xuser:_.xuser,
         idKusulan   :_.idKusulan,
         kdUser      :_.duser[_.ind].value,
-        kdLing      :_inpDrop.selected, 
+        kdLing      :_inpDrop.selected,
         volume      :$("#volume").val(),
         hargaT      :0,
         satuanT     :0,
@@ -57,20 +68,22 @@ function _added(){
         rt          :$("#rt").val(),
         rw	        :$("#rw").val(),
         catatan	    :$("#catatan").val(),
-        harga       :$("#harga").val(),
+        // harga       :$("#harga").val(),
+        harga       :0,
         satuan      :$("#satuan").val(),
+        tahapan     :_.tahapan
     }
     if(_.jenis=='hibah'){
-        param.hargaT = $("#harga").val();
+        // param.hargaT = $("#harga").val();
         param.satuanT = $("#satuan").val();
     }
     const valid = validateParam(param);
     if(!valid.exc){
         return _toastE(valid.msg);
     }
-    
-    
-    _post('/setwan/usulan/added',param).then(v=>{
+
+
+    _post('/pokir/usulan/added',param).then(v=>{
         if(v.exc){
             _addForm();
             return respon(v.data);
@@ -79,9 +92,9 @@ function _added(){
             bg:'e',
             msg:v.msg
         })
-    }); 
+    });
 }
-function _htmlForm(v) { 
+function _htmlForm(v) {
     const kond=(v==undefined? true:false);
     return `
         <div class="form1 bwhite" style="min-width: 500px !important;">
@@ -91,7 +104,7 @@ function _htmlForm(v) {
                     <span class="mdi mdi-close-circle fz25 cdanger"></span>
                 </button>
             </div>
-            <div class="body ">  
+            <div class="body ">
                 ${_inputDropdown({
                     cinput:'cdark',
                     clabel:'mw75px',
@@ -100,7 +113,7 @@ function _htmlForm(v) {
                     valInput:(kond? '':v.nmUsulan),
                     change:'changeSearchKamus',
                     iddropContent:'dropKamus',
-                    option:getOptionKamus({value:''}), 
+                    option:getOptionKamus({value:''}),
                     save:'MFC'
                 })}
                 <div id="subForm">
@@ -111,9 +124,9 @@ function _htmlForm(v) {
                     label:'Alamat',
                     idInput:'nmLing',
                     valInput:(kond? '':v.nmLing),
-                    dt:_.cbLingkungan, 
+                    dt:_.cbLingkungan,
                 })}
-                <div class="doubleInput">  
+                <div class="doubleInput">
                     <div class="double">
                         <div class="labelInput1">
                             <label>RT</label>
@@ -137,31 +150,32 @@ function _htmlForm(v) {
                 </div>
             </div>
         </div>
-    `; 
+    `;
 }
 
 
-// 3 item sepaket jika bentuk data tidak ada value 
+// 3 item sepaket jika bentuk data tidak ada value
 function changeSearchKamus(v){
     $('#dropKamus').html(getOptionKamus(v));
 }
 function selectKamusUsulan(ind){
     $(this).next().focus();
-    $('#nmUsulan').val(_.kusulan[ind].nmUsulan); 
-    $('#dropKamus').html(getOptionKamus({value:_.kusulan[ind].valueName})); 
+    $('#nmUsulan').val(_.kusulan[ind].nmUsulan);
+    $('#dropKamus').html(getOptionKamus({value:_.kusulan[ind].valueName}));
     settingForm({
         id      :_.kusulan[ind].id,
         jenis   :_.kusulan[ind].jenis,
-        harga   :_.kusulan[ind].harga,
+        // harga   :_.kusulan[ind].harga,
         satuan  :_.kusulan[ind].satuan,
         jenis   :_.kusulan[ind].jenis,
-    });    
+    });
 }
 function getOptionKamus(val){
     let _html=`<ul class="m0 over200px">`,fkond=false,valueName='';
     _.kusulan.forEach((v,i) => {
         if(v.valueName==undefined){
-            valueName=v.nmUsulan+"<br>"+_$(v.harga)+" ("+v.satuan+")<br>"+v.nmDinas;
+            // valueName=v.nmUsulan+"<br>"+_$(v.harga)+" ("+v.satuan+")<br>"+v.nmDinas;
+            valueName=v.nmUsulan+" ("+v.satuan+")<br>"+v.nmDinas;
             _.kusulan[i].valueName=valueName;
         }else{
             valueName=_.kusulan[i].valueName;
@@ -169,7 +183,7 @@ function getOptionKamus(val){
         fkond=_searchText(valueName,val.value);
         if(fkond){
             _html+=`
-                <li style="cursor:pointer;" class="pwrap" 
+                <li style="cursor:pointer;" class="pwrap"
                     onclick="selectKamusUsulan(${i})">${valueName}</li>
             `;
         }
@@ -180,6 +194,11 @@ function getOptionKamus(val){
 function settingForm(v){
     _.idKusulan = v.id;
     _.jenis = v.jenis;
+
+    // <div class="labelInput2 mtb10px Cblack">
+    //     <label class="mw75px">Harga</label>
+    //     <input type="text" id="harga" disabled value="${delUndife(v.harga)}"/>
+    // </div>
     $('#subForm').html(`
         <div class="labelInput2 mtb10px Cblack">
             <label class="mw75px">Volume</label>
@@ -189,27 +208,24 @@ function settingForm(v){
             <label class="mw75px">Satuan</label>
             <input type="text" id="satuan" disabled value="${delUndife(v.satuan)}"/>
         </div>
-        <div class="labelInput2 mtb10px Cblack">
-            <label class="mw75px">Harga</label>
-            <input type="text" id="harga" disabled value="${delUndife(v.harga)}"/>
-        </div>
+
         <div class="labelInput2 mtb10px Cblack" id="ipenerima">
             <label class="mw75px">Penerima</label>
             <input type="text" id="penerima" disabled value="${delUndife(v.penerima)}"/>
         </div>
-    `); 
-    
-    switch (v.jenis) { 
+    `);
+
+    switch (v.jenis) {
         case 'umum':
-            $('#penerima').prop('disabled', false); 
+            $('#penerima').prop('disabled', false);
         break;
         case 'fisik':
-            $('#ipenerima').css('display', 'none'); 
+            $('#ipenerima').css('display', 'none');
         break;
         case 'hibah':
-            $('#harga').prop('disabled', false); 
-            $('#satuan').prop('disabled', false); 
-            $('#penerima').prop('disabled', false); 
+            // $('#harga').prop('disabled', false);
+            $('#satuan').prop('disabled', false);
+            $('#penerima').prop('disabled', false);
         break;
     }
 }
@@ -221,18 +237,19 @@ function updData(ind) {
         nmUsulan:_.usulan[ind].nmUsulan,
         nmLing  :_.usulan[ind].nmLing,
         rt      :_.usulan[ind].rt,
-        rw      :_.usulan[ind].rw, 
-        catatan :_.usulan[ind].catatan, 
+        rw      :_.usulan[ind].rw,
+        catatan :_.usulan[ind].catatan,
     }));
     // set data terpilih
     _inpDrop.selected=_.usulan[ind].kdLing;
     _.idKusulan=_.usulan[ind].idKusulan;
 
-    indKusulan =_searchInd(_.kusulan,_.usulan[ind].idKusulan,['id']); 
-    settingForm({   
+    indKusulan =_searchInd(_.kusulan,_.usulan[ind].idKusulan,['id']);
+    settingForm({
         id      :_.kusulan[indKusulan].id,
         jenis   :_.kusulan[indKusulan].jenis,
-        harga   :_.usulan[ind].harga,
+        // harga   :_.usulan[ind].harga,
+        harga   :0,
         satuan  :_.usulan[ind].satuan,
         volume  :_.usulan[ind].volume,
         penerima:_.usulan[ind].penerima,
@@ -246,9 +263,10 @@ function _upded(ind) {
         xuser:_.xuser,
         kdUsulan    :_.usulan[ind].kdUsulan,
         kdUser      :_.usulan[ind].kdUser,
-        idKusulan   :_.idKusulan, 
-        paguIni     :_.usulan[ind].volume*_.usulan[ind].harga,
-        kdLing      :_inpDrop.selected, 
+        idKusulan   :_.idKusulan,
+        // paguIni     :_.usulan[ind].volume*_.usulan[ind].harga,
+        paguIni     :0,
+        kdLing      :_inpDrop.selected,
         volume      :$("#volume").val(),
         hargaT      :0,
         satuanT     :0,
@@ -256,11 +274,13 @@ function _upded(ind) {
         rt          :$("#rt").val(),
         rw	        :$("#rw").val(),
         catatan	    :$("#catatan").val(),
-        harga       :$("#harga").val(),
+        // harga       :$("#harga").val(),
+        harga       :0,
         satuan      :$("#satuan").val(),
+        tahapan     :_.tahapan
     }
     if(_.jenis=='hibah'){
-        param.hargaT = $("#harga").val();
+        // param.hargaT = $("#harga").val();
         param.satuanT = $("#satuan").val();
     }
     const valid = validateParam(param);
@@ -268,7 +288,7 @@ function _upded(ind) {
         return _toastE(valid.msg);
     }
     // return console.log(param);
-    _post('/setwan/usulan/upded',param).then(v=>{
+    _post('/pokir/usulan/upded',param).then(v=>{
         if(v.exc){
             formActClose();
             return respon(v.data);
@@ -302,21 +322,22 @@ function del(ind) {
             `,
         })
     );
-    
+
 }
 function _deled(ind){
     const param ={
         kdUsulan    :_.usulan[ind].kdUsulan,
         kdUser      :_.usulan[ind].kdUser,
         xuser:_.xuser,
+        tahapan     :_.tahapan
     }
-    
+
     // return console.log(param);
-    _post('/setwan/usulan/deled',param).then(v=>{
+    _post('/pokir/usulan/deled',param).then(v=>{
         if(v.exc){
             dialogClose()
             return respon(v.data);
-        } 
+        }
         return _toast({
             bg:'e',
             msg:v.msg
@@ -327,8 +348,8 @@ function _deled(ind){
 
 function validateParam(param){
     if(_isNull(_.jenis)) return _resF('tambahkan Usulan !!!');
-    if(_.jenis=='hibah'){ 
-        if(_isNull(param.hargaT)) return _resF('tambahkan harga !!!');
+    if(_.jenis=='hibah'){
+        // if(_isNull(param.hargaT)) return _resF('tambahkan harga !!!');
         if(_isNull(param.satuanT)) return _resF('tambahkan Satuan !!!');
         if(_isNull(param.penerima)) return _resF('tambahkan penerima !!!');
     }
@@ -346,7 +367,7 @@ function viewInfo(){
     $('#viewInfo').html(`
         <div class="justifyEnd">
             <div class="w50p ptb10px">
-                ${_inputDropdown({ 
+                ${_inputDropdown({
                     cinput:'bdark clight ',
                     clabel:'mw75px',
                     label:'Username',
@@ -354,16 +375,50 @@ function viewInfo(){
                     valInput:delUndife(_.duser[_.ind].valueName),
                     change:'changeAnggota',
                     iddropContent:'dropAnggota',
-                    option:_inputDropdownItem({value:''},_.duser,'selectUser'), 
+                    option:_inputDropdownItem({value:''},_.duser,'selectUser'),
                     save:'MFC'
                 })}
             </div>
         </div>
     `);
 }
-function changeAnggota(v){ 
-    $('#dropAnggota').html(_inputDropdownItem(v,_.duser,'selectUser')); 
+function changeAnggota(v){
+    $('#dropAnggota').html(_inputDropdownItem(v,_.duser,'selectUser'));
 }
 function selectUser(ind){
-    _redirectOpen("/setwan/dashboard/daftarUsulan/"+_.duser[ind].value);
+    _redirectOpen("/pokir/dashboard/daftarUsulan/"+btoa(_.duser[ind].value));
+}
+
+
+function _export(){
+    Swal.fire({
+        title: "hendak melakukan Pengiriman data dan penguncian data untuk pembahasan selanjutnya ?",
+        // showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Benar",
+        denyButtonText: `Batalkan`
+      }).then((result) => {
+        if(result.value){
+            _exported();
+        }
+      });
+}
+function _exported(){
+    const param ={
+        xuser:_.xuser
+    }
+    _post('/pokir/usulan/export',param).then(v=>{
+        if(v.exc){
+            return _redirect('/pokir/logout');
+        }
+        return _toast({
+            bg:'e',
+            msg:v.msg
+        })
+    });
+}
+
+
+function _pdf(){
+    _redirectOpen("/pokir/pdf/getusulan/"+btoa(_.duser[_.ind].value));
 }

@@ -4,20 +4,20 @@ function  _onload(){
 
 function respon(v){
     if(v!=undefined){
-        _.users=v; 
+        _.users=v;
     }
     $('#viewData').html(setTabel());
     _btabelStart("dt");
 }
 function setTabel(){
     btnAction=[];
-    btnAction.push({ 
+    btnAction.push({
         clsBtn:`btn2 cwarning`
         ,func:"updData()"
         ,icon:`<span class="material-icons">edit</span>`
         ,title:"Perbarui"
     });
-    btnAction.push({ 
+    btnAction.push({
         clsBtn:`btn2 cdanger`
         ,func:"del()"
         ,icon:`<span class="material-icons">delete</span>`
@@ -44,13 +44,13 @@ function _added(){
     const param ={
         xuser:_.xuser,
         nama    :$("#nama").val(),
-        username:$("#username").val(), 
-        password:$("#password").val(), 
+        username:$("#username").val(),
+        password:$("#password").val(),
         kdJaba  :$("#kdJaba").val()
     }
-    
+
     // return console.log(param);
-    _post('/setwan/akun/added',param).then(v=>{
+    _post('/pokir/akun/added',param).then(v=>{
         if(v.exc){
             _addForm();
             return respon(v.data);
@@ -59,9 +59,9 @@ function _added(){
             bg:'e',
             msg:v.msg
         })
-    }); 
+    });
 }
-function _htmlForm(v) { 
+function _htmlForm(v) {
     const kond=(v==undefined? true:false);
     return `
         <div class="form1 bwhite">
@@ -71,7 +71,7 @@ function _htmlForm(v) {
                     <span class="mdi mdi-close-circle fz25 cdanger"></span>
                 </button>
             </div>
-            <div class="body ">  
+            <div class="body ">
                 <div class="labelInput2 mtb10px Cblack">
                     <label class="mw75px">Nama</label>
                     <input type="text" id="nama" value="${(kond? '':v.nama )}"/>
@@ -99,7 +99,7 @@ function _htmlForm(v) {
                 </div>
             </div>
         </div>
-    `; 
+    `;
 }
 
 function updData(ind) {
@@ -109,7 +109,7 @@ function updData(ind) {
         nama :_.users[ind].name,
         username :_.users[ind].kdUser,
         password :_.users[ind].password,
-        kdJaba :_.users[ind].kdJaba, 
+        kdJaba :_.users[ind].kdJaba,
     }));
 }
 function _upded(ind) {
@@ -117,13 +117,13 @@ function _upded(ind) {
         kdUser:_.users[ind].kdUser,
         xuser:_.xuser,
         nama:$("#nama").val(),
-        username:$("#username").val(), 
-        password:$("#password").val(), 
-        kdJaba:$("#kdJaba").val(),  
+        username:$("#username").val(),
+        password:$("#password").val(),
+        kdJaba:$("#kdJaba").val(),
     }
-    
+
     // return console.log(param);
-    _post('/setwan/akun/upded',param).then(v=>{
+    _post('/pokir/akun/upded',param).then(v=>{
         if(v.exc){
             formActClose();
             return respon(v.data);
@@ -157,16 +157,16 @@ function del(ind) {
             `,
         })
     );
-    
+
 }
 function _deled(ind){
     const param ={
         kdUser:_.users[ind].kdUser,
         xuser:_.xuser,
     }
-    
+
     // return console.log(param);
-    _post('/setwan/akun/deled',param).then(v=>{
+    _post('/pokir/akun/deled',param).then(v=>{
         if(v.exc){
             dialogClose()
             return respon(v.data);
@@ -181,15 +181,15 @@ function updPass(){
     const param ={
         xuser:_.xuser,
         passO:$("#passO").val(),
-        passN:$("#passN").val(), 
-    } 
-    _post('/setwan/akun/updPass',param).then(v=>{
+        passN:$("#passN").val(),
+    }
+    _post('/pokir/akun/updPass',param).then(v=>{
         if(v.exc){
-            return _redirect('/setwan/logout');
+            return _redirect('/pokir/logout');
         }
         return _toast({
             bg:'e',
             msg:v.msg
         })
-    }); 
+    });
 }

@@ -1,24 +1,24 @@
 function  _onload(){
-    respon(); 
+    respon();
 }
 
 function respon(v){
     if(v!=undefined){
-        _.kamus=v; 
+        _.kamus=v;
     }
     $('#viewData').html(setTabel());
     _btabelStart("dt");
 }
 function setTabel(){
     btnAction=[];
-    if(_.level>1){
-        btnAction.push({ 
+    if(_.level>5){
+        btnAction.push({
             clsBtn:`btn2 cwarning`
             ,func:"updData()"
             ,icon:`<span class="material-icons">edit</span>`
             ,title:"Perbarui"
         });
-        btnAction.push({ 
+        btnAction.push({
             clsBtn:`btn2 cdanger`
             ,func:"del()"
             ,icon:`<span class="material-icons">delete</span>`
@@ -46,14 +46,14 @@ function _added(){
     const param ={
         xuser:_.xuser,
         nmUsulan:$("#nmUsulan").val(),
-        satuan  :$("#satuan").val(), 
-        harga   :$("#harga").val(), 
+        satuan  :$("#satuan").val(),
+        harga   :$("#harga").val(),
         jenis   :$("#jenis").val(),
         kdDinas :_inpDrop.selected,
     }
-    
+
     // return console.log(param);
-    _post('/setwan/kamus/added',param).then(v=>{
+    _post('/pokir/kamus/added',param).then(v=>{
         if(v.exc){
             _addForm();
             return respon(v.data);
@@ -62,9 +62,9 @@ function _added(){
             bg:'e',
             msg:v.msg
         })
-    }); 
+    });
 }
-function _htmlForm(v) { 
+function _htmlForm(v) {
     const kond=(v==undefined? true:false);
     return `
         <div class="form1 bwhite">
@@ -74,7 +74,7 @@ function _htmlForm(v) {
                     <span class="mdi mdi-close-circle fz25 cdanger"></span>
                 </button>
             </div>
-            <div class="body ">  
+            <div class="body ">
                 <div class="labelInput2 mtb10px Cblack">
                     <label class="mw75px">Uraian</label>
                     <input type="text" id="nmUsulan" value="${(kond? '':v.nmUsulan )}"/>
@@ -101,7 +101,7 @@ function _htmlForm(v) {
                     label:'Dinas',
                     idInput:'nmDinas',
                     valInput:(kond? '':v.nmDinas),
-                    dt:_.dinas, 
+                    dt:_.dinas,
                 })}
             </div>
             <div class="footer posEnd">
@@ -111,7 +111,7 @@ function _htmlForm(v) {
                 </div>
             </div>
         </div>
-    `; 
+    `;
 }
 
 function updData(ind) {
@@ -121,7 +121,7 @@ function updData(ind) {
         nmUsulan :_.kamus[ind].nmUsulan,
         satuan  :_.kamus[ind].satuan,
         harga   :_.kamus[ind].harga,
-        jenis   :_.kamus[ind].jenis, 
+        jenis   :_.kamus[ind].jenis,
         nmDinas :_.kamus[ind].nmDinas,
     }));
     $('#jenis').val(_.kamus[ind].jenis);
@@ -132,14 +132,14 @@ function _upded(ind) {
         id  :_.kamus[ind].id,
         xuser:_.xuser,
         nmUsulan:$("#nmUsulan").val(),
-        satuan  :$("#satuan").val(), 
-        harga   :$("#harga").val(), 
+        satuan  :$("#satuan").val(),
+        harga   :$("#harga").val(),
         jenis   :$("#jenis").val(),
         kdDinas :_inpDrop.selected,
     }
-    
+
     // return console.log(param);
-    _post('/setwan/kamus/upded',param).then(v=>{
+    _post('/pokir/kamus/upded',param).then(v=>{
         if(v.exc){
             formActClose();
             return respon(v.data);
@@ -173,16 +173,16 @@ function del(ind) {
             `,
         })
     );
-    
+
 }
 function _deled(ind){
     const param ={
         id  :_.kamus[ind].id,
         xuser:_.xuser,
     }
-    
+
     // return console.log(param);
-    _post('/setwan/kamus/deled',param).then(v=>{
+    _post('/pokir/kamus/deled',param).then(v=>{
         if(v.exc){
             dialogClose()
             return respon(v.data);
@@ -192,4 +192,4 @@ function _deled(ind){
             msg:v.msg
         })
     });
-} 
+}

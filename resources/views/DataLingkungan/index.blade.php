@@ -4,7 +4,7 @@
 @section('page', 'Data Lingkungan')
 @section('pageDetail', 'Informasi Lingkungan yang telah diverifikasi')
 @section('form')
-	<div class="flexC"> 
+	<div class="flexC">
 		<div class="formActionLeft" id="formActionLeft">
 			<div class="form2 ">
 				<div class="header bdark csuccess">
@@ -12,7 +12,7 @@
 						<span class="mdi mdi-map-marker-path fz25"></span>
 						<h3 class="">Data Lingkungan</h3>
 					</div>
-					@if($dt['level']>1)
+					@if($dt['level']>5)
 						<button class="btn2 blight" onclick="_addForm()">Form Entri</button>
 					@endif
 				</div>
