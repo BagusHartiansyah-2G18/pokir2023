@@ -16,7 +16,7 @@ class Cauth extends Controller
         //     }
         // }
         return view('Login.index')->with([
-            'code'  =>'login',
+            'code'  =>'Login',
             'dt'    =>[]
         ]);
     }
