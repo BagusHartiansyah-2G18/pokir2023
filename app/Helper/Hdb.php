@@ -314,8 +314,11 @@ class Hdb {
                     ->orderBy('kdUsulan','desc')
                     ->get()->first();
         try {
-            if(!(new static)->_cekEmpty($kdUsulan['kdUsulan'])){
+            // return print_r($kdUsulan['kdUsulan']);
+            if(!(new static)->_cekEmpty($kdUsulan)){
                 $kdUsulan=1;
+            }else{
+                $kdUsulan=$kdUsulan['kdUsulan']+1;
             }
         } catch (\Throwable $th) {
             $kdUsulan=$kdUsulan->kdUsulan+1;
