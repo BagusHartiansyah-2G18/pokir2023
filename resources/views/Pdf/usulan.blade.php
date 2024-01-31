@@ -103,23 +103,23 @@
         <hr>
         <br>
         <!-- <br> -->
-        <table class="fz12" class="w100p" border="1px">
+        <table class="fz12" style="text-transform: lowercase;" class="w100p" border="1px">
             <tr class="tcenter">
-                <td>No</td>
-                <td>Sumber</td>
-                <td>Usulan</td>
-                <td>Volume Satuan</td>
-                <td>Alamat</td>
-                <td>SKPD</td>
+                <td class="w2p">No</td>
+                <td class="w5p">Sumber</td>
+                <td >Usulan</td>
+                <td class="w10p">Volume Satuan</td>
+                <td class="w20p">Alamat</td>
+                <td class="w15p">SKPD</td>
             </tr>
             @foreach ($data as $v)
                 <tr class="tcenter">
-                    <td class="w2p">{{$v->kdUsulan}}</td>
-                    <td class="w5p">{{$v->kdUser}}</td>
-                    <td class="w50p">{{$v->nmUsulan}}</td>
-                    <td class="w10p">{{$v->volume}} ({{$v->satuan}})</td>
-                    <td class="w15p">{{$v->nmLing}}</td>
-                    <td class="w15p">{{$v->nmDinas}}</td>
+                    <td >{{$v->kdUsulan}}</td>
+                    <td >{{$v->kdUser}}</td>
+                    <td >{{$v->nmUsulan}}</td>
+                    <td >{{$v->volume}} ({{$v->satuan}})</td>
+                    <td >@php echo((strlen($v->rt)>0? 'rt/rw. '.$v->rt.'/'.$v->rw."<br>":'').$v->nmLing );  @endphp </td>
+                    <td >{{$v->nmDinas}}</td>
                 </tr>
             @endforeach
         </table>
