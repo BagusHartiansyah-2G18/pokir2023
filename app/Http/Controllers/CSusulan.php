@@ -21,12 +21,12 @@ class CSusulan extends Controller
                 'tahapan'=> 'required',
             ]);
             $sisaUang = Hdb::gsisaUang($request->kdUser);
-            if($sisaUang<($request->volume*$request->harga)){
-                return response()->json([
-                    'exc' => false,
-                    'msg' => "Keuangan anda tidak mencukupi !!!"
-                ], 200);
-            }
+            // if($sisaUang<($request->volume*$request->harga)){
+            //     return response()->json([
+            //         'exc' => false,
+            //         'msg' => "Keuangan anda tidak mencukupi !!!"
+            //     ], 200);
+            // }
             if(
                 Hdb::addUsulan([
                     1,
@@ -72,12 +72,12 @@ class CSusulan extends Controller
             ]);
             $sisaUang = Hdb::gsisaUang($request->kdUser);
             // return print_r($sisaUang);
-            if(($sisaUang+$request->paguIni)<($request->volume*$request->harga)){
-                return response()->json([
-                    'exc' => false,
-                    'msg' => "Keuangan anda tidak mencukupi !!!"
-                ], 200);
-            }
+            // if(($sisaUang+$request->paguIni)<($request->volume*$request->harga)){
+            //     return response()->json([
+            //         'exc' => false,
+            //         'msg' => "Keuangan anda tidak mencukupi !!!"
+            //     ], 200);
+            // }
             if(
                 DB::table('daftar_usulan')
                 ->where('kdUsulan',$request->kdUsulan)
