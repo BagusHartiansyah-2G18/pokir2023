@@ -6,20 +6,20 @@ use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\Cast\Array_;
 
 class Hdb {
-    function glastkdUang($kdPengirim){
+    public static function glastkdUang($kdPengirim){
         return DB::table('keuangan')
             ->selectRaw('kdUang')
             ->where('kdPengirim','<=',$kdPengirim)
             ->orderBy('kdUang','desc')
             ->get();
     }
-    function addKeuangan($v){
+    public static function addKeuangan($v){
         return DB::insert("
             insert keuangan (kdUang, kdPengirim, kdPenerima, nominal, keterangan) values
             (?, ?, ?, ?, ?)
         ",$v);
     }
-    function getKeuangan($kdUser){
+    public static function getKeuangan($kdUser){
         return DB::select("
             select
                 a.kdUang, a.kdPengirim, a.kdPenerima, a.nominal, a.created_at, a.keterangan,
@@ -35,7 +35,7 @@ class Hdb {
             order by a.created_at asc
         ");
     }
-    function guangMasuk($kdUser){
+    public static function guangMasuk($kdUser){
         $uangM= DB::table('keuangan')
             ->selectRaw('sum(nominal) as total')
             ->where('kdPenerima',$kdUser)
@@ -54,7 +54,7 @@ class Hdb {
         }
 
     }
-    function guangKeluar($kdUser){
+    public static function guangKeluar($kdUser){
         $uangB=(new static)->guangBelanja($kdUser);
         $uangK= DB::table('keuangan')
                 ->selectRaw('sum(nominal) as total')
@@ -73,7 +73,7 @@ class Hdb {
             return $uangK->total+$uangB;
         }
     }
-    function guangBelanja($kdUser){
+    public static function guangBelanja($kdUser){
         $uangB= DB::select("
             select
                 sum(a.volume*
@@ -99,7 +99,7 @@ class Hdb {
             return $uangB->total;
         }
     }
-    function glistUangBelanja($kdUser){
+    public static function glistUangBelanja($kdUser){
         $uangB= DB::select("
             select
                 (a.volume*
@@ -115,20 +115,20 @@ class Hdb {
         // return print_r($uangB);
         return $uangB;
     }
-    function gsisaUang($kdUser){
+    public static function gsisaUang($kdUser){
         $uangM=(new static)->guangMasuk($kdUser);
         $uangK=(new static)->guangKeluar($kdUser);
         // $uangB=(new static)->guangBelanja($kdUser);
         return $uangM-$uangK;
         // return [$uangM,$uangK,$uangB];
     }
-    function batalkanTransfer($kduang,$kdPengirim){
+    public static function batalkanTransfer($kduang,$kdPengirim){
         return DB::table('keuangan')
                 ->where('kdUang',$kduang)
                 ->where('kdPengirim',$kdPengirim)
                 ->update(['aktif'=>0]);
     }
-    function _cekEmpty($v){
+    public static function _cekEmpty($v){
         return (empty($v)=="");
         // $bool=empty($v);
         // if(strlen($bool)==1){
@@ -137,7 +137,7 @@ class Hdb {
         // return false;
     }
     //users
-    function cbUsers($user){
+    public static function cbUsers($user){
         return DB::table('users')
             ->selectRaw('kdUser as value,name as valueName')
             ->where('kdJaba','<=',$user->kdJaba)
@@ -147,7 +147,7 @@ class Hdb {
 
 
     // kamus usulan
-    function getKamusUsulan(){
+    public static function getKamusUsulan(){
         return DB::select("
             select
                 a.*,b.nmDinas
@@ -156,7 +156,7 @@ class Hdb {
                     a.kdDinas=b.kdDinas
         ");
     }
-    function addKamusUsulan($v){
+    public static function addKamusUsulan($v){
         return DB::insert("
             insert kamus_usulan (nmUsulan, satuan, harga, kdDinas, jenis) values
             (?, ?, ?, ?, ?)
@@ -164,7 +164,7 @@ class Hdb {
     }
 
     // lingkungan
-    function getLingkungan(){
+    public static function getLingkungan(){
         // concat(a.kdLing,'|',b.kdDesa,'|',c.kdDinas) as kdLingx
         return DB::select("
             select
@@ -179,7 +179,7 @@ class Hdb {
                 b.kdKec = c.kdDinas
         ");
     }
-    function cbLingkungan(){
+    public static function cbLingkungan(){
         return DB::select("
             select
                 concat(a.nmLing,', Desa. ',b.nmDesa,',',c.nmDinas) as valueName,
@@ -192,7 +192,7 @@ class Hdb {
                 b.kdKec = c.kdDinas
         ");
     }
-    function addLingkungan($v){
+    public static function addLingkungan($v){
         $kdLink = DB::table('lingkungan')
                     ->selectRaw(' kdLing ')
                     ->where('kdKec',$v[1])
@@ -214,27 +214,27 @@ class Hdb {
     }
 
     // dinas
-    function cbDinas(){
+    public static function cbDinas(){
         return DB::table('dinas')
             ->selectRaw('kdDinas as value,nmDinas as valueName')
             ->get();
     }
 
     // kecamatan
-    function cbKec(){
+    public static function cbKec(){
         return DB::table('dinas')
             ->selectRaw('kdDinas as value,nmDinas as valueName')
             ->where('nmDinas','like','%kecamatan%')
             ->get();
     }
-    function cbDesa(){
+    public static function cbDesa(){
         return DB::table('desa')
             ->selectRaw('kdDesa as value,nmDesa as valueName, kdKec ')
             ->get();
     }
 
     //daftar usulan
-    function gdaftarUsulan($kdUser, $tahapan, $tahun){
+    public static function gdaftarUsulan($kdUser, $tahapan, $tahun){
         return DB::select("
             select
                 a.kdUsulan,a.kdUser,a.idKusulan,a.kdLing,a.volume,a.catatan,a.penerima,
@@ -270,7 +270,7 @@ class Hdb {
             and a.tahun='".$tahun."'
         ");
     }
-    function gdaftarUsulanNoUser($tahapan, $tahun){
+    public static function gdaftarUsulanNoUser($tahapan, $tahun){
         return DB::select("
             select
                 a.kdUsulan,a.kdUser,a.idKusulan,a.kdLing,a.volume,a.catatan,a.penerima,
@@ -305,7 +305,7 @@ class Hdb {
             and a.tahun='".$tahun."'
         ");
     }
-    function addUsulan($v){
+    public static function addUsulan($v){
         $kdUsulan = DB::table('daftar_usulan')
                     ->selectRaw(' kdUsulan ')
                     ->where('kdUser',$v[1])
@@ -338,7 +338,7 @@ class Hdb {
         ",$v);
     }
 
-    function exportUsulan($data){
+    public static function exportUsulan($data){
         return DB::table('daftar_usulan')->insertUsing($data);
         // return DB::insert('
         //     INSERT INTO `daftar_usulan`(
