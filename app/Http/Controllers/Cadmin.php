@@ -31,7 +31,7 @@ class Cadmin extends Controller{
                     )
             ]);
         }
-        return redirect('setwan')->with('succsess','');
+        return redirect('pokir')->with('succsess','');
     }
     public function keuangan(Request $request){
         if($request->session()->has('duser')){
@@ -50,7 +50,7 @@ class Cadmin extends Controller{
                     )
             ]);
         }
-        return redirect('setwan')->with('succsess','');
+        return redirect('pokir')->with('succsess','');
     }
     public function kamusUsulan(Request $request){
         if($request->session()->has('duser')){
@@ -67,7 +67,7 @@ class Cadmin extends Controller{
                     )
             ]);
         }
-        return redirect('setwan')->with('succsess','');
+        return redirect('pokir')->with('succsess','');
     }
     public function dataLingkungan(Request $request){
         if($request->session()->has('duser')){
@@ -83,7 +83,7 @@ class Cadmin extends Controller{
                     )
             ]);
         }
-        return redirect('setwan')->with('succsess','');
+        return redirect('pokir')->with('succsess','');
     }
     public function daftarUsulan(Request $request,$kdUser){
         if($request->session()->has('duser')){
@@ -165,7 +165,7 @@ class Cadmin extends Controller{
                     )
             ]);
         }
-        return redirect('setwan')->with('succsess','');
+        return redirect('pokir')->with('succsess','');
     }
     public function akun(Request $request){
         if($request->session()->has('duser')){
@@ -188,7 +188,7 @@ class Cadmin extends Controller{
                     )
             ]);
         }
-        return redirect('setwan')->with('succsess','');
+        return redirect('pokir')->with('succsess','');
     }
     public function timer(Request $request){
         $cek = $this->portal($request);
@@ -203,7 +203,7 @@ class Cadmin extends Controller{
                     )
             ]);
         }
-        return redirect('setwan/dashboard')->with('succsess','');
+        return redirect('pokir/dashboard')->with('succsess','');
     }
     function getData($v){
         try {

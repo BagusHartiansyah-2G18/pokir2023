@@ -251,7 +251,7 @@ class Hdb {
                 c.nmDinas,
                 (
                     select
-                        concat(a1.nmLing,', Desa1. ',b1.nmDesa,',',c1.nmDinas) as valueName
+                        concat(b1.nmDesa,'<br>',c1.nmDinas) as valueName
                     from lingkungan a1
                     join desa b1 on
                         a1.kdDesa=b1.kdDesa and
@@ -287,7 +287,7 @@ class Hdb {
                 c.nmDinas,
                 (
                     select
-                        concat(a1.nmLing,', Desa1. ',b1.nmDesa,',',c1.nmDinas) as valueName
+                        concat(b1.nmDesa,'<br>',c1.nmDinas) as valueName
                     from lingkungan a1
                     join desa b1 on
                         a1.kdDesa=b1.kdDesa and
@@ -314,8 +314,11 @@ class Hdb {
                     ->orderBy('kdUsulan','desc')
                     ->get()->first();
         try {
-            if(!(new static)->_cekEmpty($kdUsulan['kdUsulan'])){
+            // return print_r($kdUsulan['kdUsulan']);
+            if(!(new static)->_cekEmpty($kdUsulan)){
                 $kdUsulan=1;
+            }else{
+                $kdUsulan=$kdUsulan['kdUsulan']+1;
             }
         } catch (\Throwable $th) {
             $kdUsulan=$kdUsulan->kdUsulan+1;

@@ -33,7 +33,7 @@ class PdfGenerate extends Controller
 
 
         // return print_r($data);
-        $pdf = PDF::loadView('pdf.usulan', [
+        $pdf = PDF::loadView('Pdf.usulan', [
             "data"=>$data
         ])
                 ->setPaper('legal','portrait');
